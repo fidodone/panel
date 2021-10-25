@@ -191,7 +191,7 @@ def index(user):
         vendor = "sbio"
     else:
         vendor = "swizzin"
-    return flask.render_template('index.html', title='{user} - painel nixoncloud'.format(user=user), user=user, pages=pages, quota=quota, vendor=vendor, mounts=mounts, async_mode=socketio.async_mode)
+    return flask.render_template('index.html', title='{user} - seedbox'.format(user=user), user=user, pages=pages, quota=quota, vendor=vendor, mounts=mounts, async_mode=socketio.async_mode)
 
 @socketio.on('connect', namespace='/websocket')
 def socket_connect():
@@ -381,7 +381,7 @@ def network_quota(user):
 
 @app.route('/login')
 def login():
-    return flask.render_template('login.html', title='swizzin login')
+    return flask.render_template('login.html', title='painel da seedbox')
 
 @app.route('/login/auth')
 @htpasswd.required

@@ -54,11 +54,7 @@
                 {{ user }}
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
-                <a class="dropdown-item" href="https://google.com">Github</a>
-                <a class="dropdown-item" href="https://google.com">Discord</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://google.com">Documentation</a>
+                <a class="dropdown-item" href="{{ url_for('logout') }}">Sair</a>
               </div>
           </li>
         </ul>
@@ -131,7 +127,7 @@
 
 {% macro build_app_table(apps) %}
 <div class="card border-dark mt-3">
-  <div class="card-header">Service Info</div>
+  <div class="card-header">Programas</div>
   <div class="card-body">
     <table class="table table-borderless table-hover table-sm table-dark">
         <tbody>
@@ -144,9 +140,9 @@
             {% for app in apps|sort(attribute="pretty_name") if app.systemd %}
             <tr>
                 <td class="align-middle"><span class="align-middle">{{ app.pretty_name }}</span></td>
-                <td class="align-middle text-center"><a post="true" phref="{{ url_for('service') }}" pdata='{"user": "{{ user }}", "function": "restart", "application": "{{ app.name }}"}' class="btn btn-xs btn-secondary"><i class="fa fa-refresh"></i>Restart</a></td>
+                <td class="align-middle text-center"><a post="true" phref="{{ url_for('service') }}" pdata='{"user": "{{ user }}", "function": "restart", "application": "{{ app.name }}"}' class="btn btn-xs btn-secondary"><i class="fa fa-refresh"></i>Reiniciar</a></td>
                 <td class="align-middle text-center"><span id="status_{{ app.name }}" class="indicator"></span></td>
-                <td class="align-middle text-center"><input data-toggle="toggle" post="true" phref="{{ url_for('service') }}" pdata='{"application": "{{ app.name }}"}' type="checkbox" data-size="xs" data-on="Enabled" data-off="Disabled" data-onstyle="outline-success" data-offstyle="outline-danger" id="enabled_{{ app.name }}"></td>
+                <td class="align-middle text-center"><input data-toggle="toggle" post="true" phref="{{ url_for('service') }}" pdata='{"application": "{{ app.name }}"}' type="checkbox" data-size="xs" data-on="Ativado" data-off="Desativado" data-onstyle="outline-success" data-offstyle="outline-danger" id="enabled_{{ app.name }}"></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -160,8 +156,8 @@
     <thead class="table-active">
         <tr>
             <th scope="col" class="text-center">Mount</th>
-            <th scope="col" class="text-center">Used</th>
-            <th scope="col" class="text-center">Free</th>
+            <th scope="col" class="text-center">Usado</th>
+            <th scope="col" class="text-center">Disponível</th>
             <th scope="col" class="text-center">Total</th>
         </tr>
     </thead>
@@ -224,8 +220,8 @@ function getdisks() {
       <thead class="table-active">
           <tr>
               <th scope="col" class="text-center">Mount</th>
-              <th scope="col" class="text-center">Used</th>
-              <th scope="col" class="text-center">Free</th>
+              <th scope="col" class="text-center">Usado</th>
+              <th scope="col" class="text-center">Disponível</th>
               <th scope="col" class="text-center">Total</th>
           </tr>
       </thead>
