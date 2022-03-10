@@ -54,7 +54,11 @@
                 {{ user }}
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ url_for('logout') }}">Sair</a>
+                <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                <a class="dropdown-item" href="https://github.com/liaralabs/swizzin">Github</a>
+                <a class="dropdown-item" href="https://discord.gg/sKjs9UM">Discord</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="https://swizzin.ltd">Documentation</a>
               </div>
           </li>
         </ul>
@@ -142,7 +146,7 @@
                 <td class="align-middle"><span class="align-middle">{{ app.pretty_name }}</span></td>
                 <td class="align-middle text-center"><a post="true" phref="{{ url_for('service') }}" pdata='{"user": "{{ user }}", "function": "restart", "application": "{{ app.name }}"}' class="btn btn-xs btn-secondary"><i class="fa fa-refresh"></i>Reiniciar</a></td>
                 <td class="align-middle text-center"><span id="status_{{ app.name }}" class="indicator"></span></td>
-                <td class="align-middle text-center"><input data-toggle="toggle" post="true" phref="{{ url_for('service') }}" pdata='{"application": "{{ app.name }}"}' type="checkbox" data-size="xs" data-on="Ativado" data-off="Desativado" data-onstyle="outline-success" data-offstyle="outline-danger" id="enabled_{{ app.name }}"></td>
+                <td class="align-middle text-center"><input data-toggle="toggle" post="true" phref="{{ url_for('service') }}" pdata='{"application": "{{ app.name }}"}' type="checkbox" data-size="xs" data-on="Enabled" data-off="Disabled" data-onstyle="outline-success" data-offstyle="outline-danger" id="enabled_{{ app.name }}"></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -265,7 +269,12 @@ function getdisks() {
 //getdisks()
 
 function appstatus(){
-  $.get("{{ url_for('app_status') }}", function(data){
+  $.get("{{ url_for('app_status') }}", function(data, xhr){
+  if(xhr.status==401)
+    {
+      clearTimeout(timer);
+      return
+    }
   for (var apps in data) {
     var name = data[apps]["name"];
     var enabled = data[apps]["enabled"];
@@ -288,7 +297,12 @@ function appstatus(){
 appstatus();
 
 (function loadavg() {
-    $.get('{{ url_for('loadavg') }}', function(data) {
+    $.get('{{ url_for('loadavg') }}', function(data, xhr) {
+      if(xhr.status==401)
+      {
+        clearTimeout(timer);
+        return
+      }
       $("#load1m").html(data['1m']);
       $("#load5m").html(data['5m']);
       $("#load15m").html(data['15m']);
@@ -306,7 +320,12 @@ appstatus();
 })();
 
 (function diskusage() {
-    $.get('{{ url_for('disk_free') }}', function(data) {
+    $.get('{{ url_for('disk_free') }}', function(data, xhr) {
+      if(xhr.status==401)
+      {
+        clearTimeout(timer);
+        return
+      }
       for (var mount in data) {
         var percent = Math.trunc(data[mount]['perutil']);
         $("#"+$.escapeSelector(mount)+"diskfree").html(data[mount]['diskfree']);
@@ -329,7 +348,12 @@ appstatus();
 })();
 
 (function ramusage() {
-    $.get('{{ url_for('ram_stats') }}', function(data) {
+    $.get('{{ url_for('ram_stats') }}', function(data, xhr) {
+      if(xhr.status==401)
+      {
+        clearTimeout(timer);
+        return
+      }
       var percent = Math.trunc(data['perutil']);
       $("#ramfree").html(data['ramfree']);
       $("#ramused").html(data['ramused']);
@@ -351,7 +375,12 @@ appstatus();
 })();
 
 (function vnstat_top10() {
-    $.get('{{ url_for('vnstat') }}', function(data) {
+    $.get('{{ url_for('vnstat') }}', function(data, xhr) {
+      if(xhr.status==401)
+      {
+        clearTimeout(timer);
+        return
+      }
       $("#top10").html(data);
       setTimeout(function(){vnstat_top10()}, 600000);
       }
@@ -360,7 +389,7 @@ appstatus();
 
 
   window.onload = function() {
-    $.get('{{ url_for('boot_time') }}', function(data) {
+    $.get('{{ url_for('boot_time') }}', function(data, xhr) {
       countUpFromTime(data, 'uptime');
     })
   };
@@ -408,7 +437,12 @@ appstatus();
 
 {% macro build_widget_js_shared() %}
 (function netusage() {
-  $.get('{{ url_for('network_quota') }}', function(data) {
+  $.get('{{ url_for('network_quota') }}', function(data, xhr) {
+    if(xhr.status==401)
+    {
+      clearTimeout(timer);
+      return
+    }
     var percent = Math.trunc(data['perutil']);
     $("#netfree").html(data['netfree']);
     $("#netused").html(data['netused']);

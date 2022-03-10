@@ -85,6 +85,13 @@ class medusa_meta:
     systemd = "medusa@"
     multiuser = True
 
+class navidrome_meta:
+    name = "navidrome"
+    pretty_name = "Navidrome"
+    baseurl = "/navidrome"
+    systemd = "navidrome"
+    img = "navidrome"
+
 class nzbget_meta:
     name = "nzbget"
     pretty_name = "nzbGet"
